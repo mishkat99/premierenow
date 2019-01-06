@@ -1,6 +1,5 @@
 from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
+import pymongo
 from bs4 import BeautifulSoup
 
 url = 'https://www.metacritic.com/feature/tv-premiere-dates'
@@ -16,10 +15,19 @@ headers = {
 # elements = soup.find_all("table", "listtable linedtable");
 
 
+mongo_url = '';
+with open("../config/keys.txt") as keys:
+	mongo_url = keys.readline();
+
+def update_mongo(shows):
+	mydb = pymongo.MongoClient(mongo_url);
+
+
 with open('test.html') as page:
 	soup = BeautifulSoup(page, features="html.parser");
 
 elements = soup.find_all("table", "listtable linedtable");
+
 
 shows = [];
 
@@ -55,5 +63,3 @@ for child in elements:
 			break;
 		date = next_el.th.string.split('/')[1].strip();
 		next_el = next_el.find_next_sibling('tr', 'even');
-
-print(shows);
