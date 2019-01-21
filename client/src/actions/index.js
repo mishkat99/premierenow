@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { GET_USER } from './types';
+import { SEARCH_SHOWS } from './types';
 
 export function fetchUser() {
 
@@ -9,5 +10,18 @@ export function fetchUser() {
 
 		dispatch(action);
 	}
+
+}
+
+export function searchShows(query, user) {
+
+	return async function(dispatch) {
+		const uri = '/search?q=' + encodeURIComponent(query);
+
+		const res = await axios.get(uri);
+		console.log(res);
+	}
+
+
 
 }
